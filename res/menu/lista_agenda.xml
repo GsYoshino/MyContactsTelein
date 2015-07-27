@@ -1,0 +1,40 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.drummond.agenda.ListaAgenda" >
+    
+    <!-- Item de menu com @+id/search foi criado diretamente na classe ListaContatos -->
+    <item 
+        android:id="@+id/caller"
+        android:showAsAction="always"
+        android:title="Caller"
+        android:icon="@drawable/ic_action_call"/>
+    <item 
+        android:id="@+id/novo"
+        android:showAsAction="always"
+        android:title="Novo"
+        android:icon="@drawable/ic_action_user_add"/>
+    <item 
+        android:id="@+id/map"
+        android:showAsAction="always"
+        android:title="Contatos no mapa"
+        android:icon="@drawable/ic_location_map"/>
+    <item 
+        android:title="overflow"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_overflow">
+	   	<menu>
+	   	    <item
+	   	        android:id="@+id/about"
+	   	        android:title="Sobre"
+	   	        android:icon="@drawable/ic_action_about"
+	   	        android:showAsAction="always"/>
+	   	    <item
+	   	        android:id="@+id/settings"
+	   	        android:title="Configurações"
+	   	        android:icon="@drawable/ic_action_settings"
+	   	        android:showAsAction="always"/>
+	   	</menu>
+	</item>
+        	                
+</menu>
