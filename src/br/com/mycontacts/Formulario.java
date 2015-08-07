@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -17,11 +19,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import br.com.mycontacts.lista.dao.ContatoDAO;
 import br.com.mycontacts.lista.modelo.Contato;
+
 
 @SuppressLint("NewApi") public class Formulario extends Activity{
 	
@@ -33,7 +37,8 @@ import br.com.mycontacts.lista.modelo.Contato;
 	
 	private Contato contato;
 	private ContatoDAO dao;
-	private ImageButton botao; 
+	private ImageButton botao;
+	private Button btnOp;
 	private boolean i;
 	private MainActivity MainActtivity;
 	
@@ -66,8 +71,8 @@ import br.com.mycontacts.lista.modelo.Contato;
 				//especialista para salvar no Sqlite
 				ContatoDAO dao = new ContatoDAO(Formulario.this);
 				
-				if (contatoAlterar == null && contatoMostrar == null){
-					dao.salva(contato);
+				if (contatoAlterar == null && contatoMostrar == null){					
+					dao.salva(contato);		
 				} else if (contatoAlterar != null) {
 					//contato.setId(contato.getId());
 					dao.alterar(contato);
@@ -77,6 +82,40 @@ import br.com.mycontacts.lista.modelo.Contato;
 				finish(); //Botão voltar automatico
 			}
 		});		
+		
+		btnOp = (Button) findViewById(R.id.btnOp);
+		btnOp.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+			       final Handler handler = new Handler();
+
+			        new Thread(){
+
+						@Override
+			            public void run() {
+			                try {
+			                	final String resultado;
+			                    // aqui faz o processo dentro da Thread secundaria, fora da Thread Main e busca o retorno de um WebService
+			                   //resultado = artigoDao.consultarSituacao();
+			                	resultado = "TESTE";
+			                    handler.post(new Runnable() {
+			                        public void run() {
+			                            // Aqui dentro do Handler atualiza a view com o retorno, dentro da Thread Main
+			                            //TextView textViewSituacao  = (TextView) findViewById(R.id.textViewSituacao);
+			                        	btnOp.setText(resultado);
+			                        	//Toast.makeText(SimulacaoVendaActivity.this, "Artigos Sincronizados com Sucesso.", Toast.LENGTH_SHORT).show();
+			                        }
+			                    });
+			                } catch (final Exception e) {
+			                    e.getMessage();
+			                }
+			            }
+			        }.start();    
+			       // Log.i("TESTE: ", "= "+resultado);				
+			}
+		});
+			
 		
 		ImageView foto = helper.getFoto();
 		foto.setOnClickListener(new OnClickListener() {
@@ -101,7 +140,6 @@ import br.com.mycontacts.lista.modelo.Contato;
 			}
 		});
 	}
-	
 	@Override
 	protected void onResume() {
 		super.onResume();

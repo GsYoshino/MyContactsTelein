@@ -9,6 +9,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -25,17 +27,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.com.mycontacts.lista.modelo.Contato;
-import android.os.Handler;
-import android.os.Message;
 
-public class FormularioHelper {
+@SuppressLint("HandlerLeak") public class FormularioHelper {
 
 	private static final Context Formulario = null;
 	private EditText editNome, editTelefone, editEmail, editEndereco;
 	private RatingBar ratingFavorito;
 	private ImageView foto;
 	//private Spinner editOperadora;
-	private TextView editOperadora;
+	public Button editOperadora;
 	private Spinner emailtipo;
 	private Spinner enderecotipo;
 	private Contato contato;
@@ -45,11 +45,11 @@ public class FormularioHelper {
 	ArrayList<String> tipos;
 	//public String operadora;
 	public String response, opaux;
+	private static String texto;
 	
 	Thread thread;
-	Handler handler;
-	
-	MainActivity mainActivity = new MainActivity();
+//	Handler handler;
+	Message msg = new Message();
 	
 	public FormularioHelper(Formulario formulario) {
 		editNome = (EditText) formulario.findViewById(R.id.nome);
@@ -59,7 +59,8 @@ public class FormularioHelper {
 		ratingFavorito = (RatingBar) formulario.findViewById(R.id.favorito);
 		foto = (ImageView) formulario.findViewById(R.id.foto);
 		//editOperadora = (Spinner) formulario.findViewById(R.id.operadora);
-		editOperadora = (TextView) formulario.findViewById(R.id.operadora);
+		//editOperadora = (TextView) formulario.findViewById(R.id.operadora);
+		editOperadora = (Button) formulario.findViewById(R.id.btnOp);
 		emailtipo= (Spinner) formulario.findViewById(R.id.emailtipo);
 		enderecotipo= (Spinner) formulario.findViewById(R.id.enderecotipo);
      			
@@ -78,7 +79,7 @@ public class FormularioHelper {
 		
 		contato = new Contato();
 	}
-	
+
 	public Contato pegaContatoDoFormulario() { 	
 		
 		contato.setNome(editNome.getText().toString());
@@ -90,54 +91,79 @@ public class FormularioHelper {
 		contato.setEndereco(editEndereco.getText().toString());
 		contato.setTipoendereco((int) enderecotipo.getSelectedItemId());
 		contato.setFavorito(Double.valueOf(ratingFavorito.getRating()));
-		
-		//DescobrirOperadoraTelein();
 
-		thread=new Thread(new MyThread());
-		thread.start();
-		handler = new Handler(){
+		 /*handler = new Handler(){
 			public void handleMessage(Message op) {
-				String texto = (String)op.obj;
+				texto = (String)op.obj;								
 				editOperadora.setText(texto);
-
-		contato.setOpTelein(editOperadora.getText().toString());
+				contato.setOpTelein(texto);
+				Log.i("CONTATO 1: ", contato.getOpTelein());
 			}
 		};
 		
+		thread=new Thread(new MyThread(handler));
+		thread.start();*/
+		//testeHandler();
+		
+		contato.setOpTelein(editOperadora.getText().toString());
+		
 		Log.i("editOperadora", "é: "+editOperadora.getText().toString());
-		Log.i("OP2", "getTelein: "+contato.getOpTelein());
+		Log.i("CONTATO2", "= "+contato.getOpTelein());
 		
 		return contato;
 	}
+	
+	/*public void testeHandler(){
+        final Handler handler = new Handler();
+        final String resultado;
 
-	
-	class MyThread implements Runnable {
-		@Override
+        new Thread(){
+
+			@Override
             public void run() {
-        		//String URL = "http://consultaoperadora1.telein.com.br/sistema/consulta_resumida.php?numero=11962301830&chave=74b451b7a6ef79a57085";
-                SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
-        		try {   
-        			Message msg = new Message();
-        			//response = httpConnection.post(URL);
-        			response = "testetestando";  
-        			msg.obj = "xxx";
-        			handler.sendMessage(msg);
-        		    //TesteAux(response);        			
-        		    //Log.i("X1", "Resposta: " + response);
-        		} catch (IllegalStateException e) {
-                  e.printStackTrace();
-        		} /*catch (IOException e) {
-                  e.printStackTrace();
-        		}   */     	
-			}
-		}
+                try {
+                    // aqui faz o processo dentro da Thread secundaria, fora da Thread Main e busca o retorno de um WebService
+                   //resultado = artigoDao.consultarSituacao();
+                	resultado = "TESTE";
+                    handler.post(new Runnable() {
+                        public void run() {
+                            // Aqui dentro do Handler atualiza a view com o retorno, dentro da Thread Main
+                            //TextView textViewSituacao  = (TextView) findViewById(R.id.textViewSituacao);
+                        	editOperadora.setText("ATUALIZADO");
+                        	//Toast.makeText(SimulacaoVendaActivity.this, "Artigos Sincronizados com Sucesso.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (final Exception e) {
+                    e.getMessage();
+                }
+            }
+        }.start();    
+        Log.i("TESTE: ", "= "+resultado);
+	}
+	*/
 	
+	/*class MyThread implements Runnable {
+		public MyThread(Handler handler) {
+				//String URL = "aqui será a url";
+                //SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
+		}
+		@Override
+		public void run() {
+			try {   
+				//response = httpConnection.post(URL);
+				msg.obj = "xxx";
+				handler.sendMessage(msg);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} 				
+		}
+	}	*/
 	/*public void DescobrirOperadoraTelein(){
 		new Thread() {
 			@Override
             public void run() {
                 super.run();
-        		//String URL = "http://consultaoperadora1.telein.com.br/sistema/consulta_resumida.php?numero=11962301830&chave=74b451b7a6ef79a57085";
+        		//String URL = "aqui será url";
                 SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
         		try {   
         			//response = httpConnection.post(URL);
@@ -157,7 +183,6 @@ public class FormularioHelper {
 
 	*/
 	
-
 	public void colocaContatoNoFormulario(Contato contatoMostrar, String mostrarOuAlterar) {
 		contato = contatoMostrar;
 		editNome.setText(contatoMostrar.getNome());

@@ -83,49 +83,6 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 	
-	Handler handler = new Handler(){
-		public void handleMessage(Message op) {
-			View form = findViewById(R.layout.formulario);
-			TextView textViewOp = (TextView) form.findViewById(R.id.operadora);
-			
-			textViewOp.setText("testando :)");
-			Log.i("MSG", "resposta: "+op);
-		};	
-	};
-
-	public void DescobrirOperadoraTelein() {
-		new Thread() {
-			@Override
-            public void run() {
-                super.run();
-        		//String URL = "http://consultaoperadora1.telein.com.br/sistema/consulta_resumida.php?numero=11962301830&chave=74b451b7a6ef79a57085";
-                SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
-        		try {   
-        			//response = httpConnection.post(URL);
-        			response = "testetestando";  
-        			Message msg = Message.obtain();
-        			handler.sendMessage(msg);
-        		    //TesteAux(response);        			
-        		    Log.i("X1", "Resposta: " + response);
-        		} catch (IllegalStateException e) {
-                  e.printStackTrace();
-        		} /*catch (IOException e) {
-                  e.printStackTrace();
-        		}   */     	
-			}
-		}.start();
-	}
-	
-	public void TesteAux(final String op){
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				textViewOp.setText("TESTANDO");
-				Log.i("DENTRO DO RUN", "OP3: "+ op);
-			}
-		});
-	}
-
 	public void DescobriMinhaOperadora() {
 		//LIGAÇÃO EFETUADA NO FRAGMENT1
 		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
