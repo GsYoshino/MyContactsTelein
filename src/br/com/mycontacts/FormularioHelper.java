@@ -91,19 +91,6 @@ import br.com.mycontacts.lista.modelo.Contato;
 		contato.setEndereco(editEndereco.getText().toString());
 		contato.setTipoendereco((int) enderecotipo.getSelectedItemId());
 		contato.setFavorito(Double.valueOf(ratingFavorito.getRating()));
-
-		 /*handler = new Handler(){
-			public void handleMessage(Message op) {
-				texto = (String)op.obj;								
-				editOperadora.setText(texto);
-				contato.setOpTelein(texto);
-				Log.i("CONTATO 1: ", contato.getOpTelein());
-			}
-		};
-		
-		thread=new Thread(new MyThread(handler));
-		thread.start();*/
-		//testeHandler();
 		
 		contato.setOpTelein(editOperadora.getText().toString());
 		
@@ -113,75 +100,6 @@ import br.com.mycontacts.lista.modelo.Contato;
 		return contato;
 	}
 	
-	/*public void testeHandler(){
-        final Handler handler = new Handler();
-        final String resultado;
-
-        new Thread(){
-
-			@Override
-            public void run() {
-                try {
-                    // aqui faz o processo dentro da Thread secundaria, fora da Thread Main e busca o retorno de um WebService
-                   //resultado = artigoDao.consultarSituacao();
-                	resultado = "TESTE";
-                    handler.post(new Runnable() {
-                        public void run() {
-                            // Aqui dentro do Handler atualiza a view com o retorno, dentro da Thread Main
-                            //TextView textViewSituacao  = (TextView) findViewById(R.id.textViewSituacao);
-                        	editOperadora.setText("ATUALIZADO");
-                        	//Toast.makeText(SimulacaoVendaActivity.this, "Artigos Sincronizados com Sucesso.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } catch (final Exception e) {
-                    e.getMessage();
-                }
-            }
-        }.start();    
-        Log.i("TESTE: ", "= "+resultado);
-	}
-	*/
-	
-	/*class MyThread implements Runnable {
-		public MyThread(Handler handler) {
-				//String URL = "aqui será a url";
-                //SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
-		}
-		@Override
-		public void run() {
-			try {   
-				//response = httpConnection.post(URL);
-				msg.obj = "xxx";
-				handler.sendMessage(msg);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} 				
-		}
-	}	*/
-	/*public void DescobrirOperadoraTelein(){
-		new Thread() {
-			@Override
-            public void run() {
-                super.run();
-        		//String URL = "aqui será url";
-                SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
-        		try {   
-        			//response = httpConnection.post(URL);
-        			response = "testetestando";  
-        			Message msg = Message.obtain();
-        			handler.sendMessage(msg);
-        		    //TesteAux(response);        			
-        		    //Log.i("X1", "Resposta: " + response);
-        		} catch (IllegalStateException e) {
-                  e.printStackTrace();
-        		} catch (IOException e) {
-                  e.printStackTrace();
-        		}        	
-			}
-		}.start();
-	}
-
-	*/
 	
 	public void colocaContatoNoFormulario(Contato contatoMostrar, String mostrarOuAlterar) {
 		contato = contatoMostrar;

@@ -88,22 +88,28 @@ import br.com.mycontacts.lista.modelo.Contato;
 			
 			@Override
 			public void onClick(View v) {
-			       final Handler handler = new Handler();
-
+				final Handler handler = new Handler();
 			        new Thread(){
-
 						@Override
 			            public void run() {
 			                try {
-			                	final String resultado;
-			                    // aqui faz o processo dentro da Thread secundaria, fora da Thread Main e busca o retorno de um WebService
-			                   //resultado = artigoDao.consultarSituacao();
-			                	resultado = "TESTE";
+			                	Class_Operadora classe_op = new Class_Operadora();
+			                	final String NomeOperadora;
+			                	String response;
+			                  
+			                	//String URL = "http://consultaoperadora1.telein.com.br/sistema/consulta_resumida.php?numero=11962301830&chave=74b451b7a6ef79a57085";
+			                	//SynchronousHttpConnection httpConnection = new SynchronousHttpConnection();
+			                	//response = httpConnection.post(URL);
+			                	response = "21#962301830";
+			                	
+			                	NomeOperadora = classe_op.NomearOperadora(response);
+			                	
+			                	Log.i("RESPONSE ", ": "+NomeOperadora);
 			                    handler.post(new Runnable() {
 			                        public void run() {
 			                            // Aqui dentro do Handler atualiza a view com o retorno, dentro da Thread Main
 			                            //TextView textViewSituacao  = (TextView) findViewById(R.id.textViewSituacao);
-			                        	btnOp.setText(resultado);
+			                        	btnOp.setText(NomeOperadora);
 			                        	//Toast.makeText(SimulacaoVendaActivity.this, "Artigos Sincronizados com Sucesso.", Toast.LENGTH_SHORT).show();
 			                        }
 			                    });
@@ -111,8 +117,7 @@ import br.com.mycontacts.lista.modelo.Contato;
 			                    e.getMessage();
 			                }
 			            }
-			        }.start();    
-			       // Log.i("TESTE: ", "= "+resultado);				
+			        }.start();    			
 			}
 		});
 			
